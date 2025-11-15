@@ -1,4 +1,3 @@
-// app/(tabs)/_layout.tsx
 import React, { useRef } from 'react';
 import { View, Image, Text, Pressable, StyleSheet } from 'react-native';
 import { Link, Tabs } from 'expo-router';
@@ -39,7 +38,6 @@ export default function TabLayout() {
         },
       }}
     >
-      {/* Main app background that matches the tab bar */}
       <View style={styles.appBackground} />
 
       <Tabs
@@ -64,7 +62,6 @@ export default function TabLayout() {
           headerShown: true,
         }}
       >
-        {/* Home tab */}
         <Tabs.Screen
           name="index"
           options={{
