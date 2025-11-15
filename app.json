@@ -22,7 +22,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.aniruddhasonawane.skolarup"
     },
     "web": {
       "bundler": "metro",
@@ -34,6 +35,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "39df3d48-11cb-4cc4-8d7d-a0e615a5ebdb"
+      }
+    },
+    "owner": "aniruddha.66"
   }
 }

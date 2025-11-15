@@ -1,3 +1,4 @@
+// app/_layout.tsx
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -5,6 +6,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -51,8 +53,62 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+        {/* Main tabs */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+
+        {/* Modal renamed to About Me */}
+        <Stack.Screen
+          name="modal"
+          options={{
+            presentation: 'modal',
+            headerTitle: 'About Me', 
+            headerTitleAlign: 'left',
+            headerTitleStyle: { fontWeight: 'bold', fontSize: 22, color: '#fff' },
+            headerBackground: () => (
+              <LinearGradient
+                colors={['#0f75bc', '#1b9be0', '#4db6e6']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1 }}
+              />
+            ),
+          }}
+        />
+
+        {/* 🔗 New Link Viewer screen */}
+        {/* 🔗 New Link Viewer screen */}
+<Stack.Screen
+  name="LinkViewer"
+  options={({ route }: { route: { params?: { title?: string } } }) => ({
+    headerTitle: route.params?.title || 'Link Viewer', // dynamic title
+    headerTitleAlign: 'left',
+    headerTitleStyle: { fontWeight: 'bold', fontSize: 22, color: '#fff' },
+    headerBackground: () => (
+      <LinearGradient
+        colors={['#0f75bc', '#1b9be0', '#4db6e6']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{ flex: 1 }}
+      />
+    ),
+  })}
+/>
+<Stack.Screen
+  name="postView"
+  options={({ route }: { route: { params?: { title?: string } } }) => ({
+    headerTitle: route.params?.title || 'Post', // dynamic title
+    headerTitleAlign: 'left',
+    headerTitleStyle: { fontWeight: 'bold', fontSize: 22, color: '#fff' },
+    headerBackground: () => (
+      <LinearGradient
+        colors={['#0f75bc', '#1b9be0', '#4db6e6']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{ flex: 1 }}
+      />
+    ),
+  })}
+/>
       </Stack>
     </ThemeProvider>
   );
