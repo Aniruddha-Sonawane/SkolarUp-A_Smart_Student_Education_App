@@ -1,4 +1,4 @@
-// app/(tabs)/two.tsx
+
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
@@ -55,7 +55,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
   const [terminalMode, setTerminalMode] = useState(false);
   const navigation = useNavigation<ChatBotScreenNavigationProp>();
 
-  // ------------------ FETCH ADMIN SESSIONS ------------------
+  
   const fetchAdminSessions = async () => {
     const sessionsRef = ref(db, 'chatbot/device_1');
     const snapshot = await get(sessionsRef);
@@ -74,7 +74,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
     setAdminSessions(sessionsWithTime.map(s => s.key));
   };
 
-  // ------------------ FETCH CONFIG ------------------
+  
   useEffect(() => {
   const responsesRef = ref(db, 'chatbot/responses');
   onValue(responsesRef, snapshot => {
@@ -84,7 +84,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
       return;
     }
     
-    // Convert the data structure to match our expected format
+    
     const formattedResponses: Record<string, string[]> = {};
     
     Object.entries(data).forEach(([key, value]) => {
@@ -93,7 +93,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
       } else if (typeof value === 'string') {
         formattedResponses[key] = [value];
       } else if (value && typeof value === 'object') {
-        // Handle object format {0: "response1", 1: "response2"}
+        
         formattedResponses[key] = Object.values(value).filter(v => typeof v === 'string') as string[];
       } else {
         formattedResponses[key] = [];
@@ -129,7 +129,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
   });
 }, []);
 
-  // ------------------ FETCH SUGGESTIONS ------------------
+  
   useEffect(() => {
     const suggestionsRef = ref(db, 'chatbot/suggestions');
     onValue(suggestionsRef, snapshot => {
@@ -140,7 +140,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
     });
   }, []);
 
-  // ------------------ SESSION LISTENER ------------------
+  
   useEffect(() => {
     if (sessionNode) {
       const sessionRef = ref(db, `chatbot/${sessionNode}`);
@@ -158,7 +158,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
     }
   }, [sessionNode]);
 
-  // ------------------ FETCH ALL SESSIONS FOR LIVE CHAT ------------------
+  
   useEffect(() => {
     if (showLiveChat && isAdmin) {
       const sessionsRef = ref(db, 'chatbot/device_1');
@@ -179,7 +179,7 @@ const [responses, setResponses] = useState<Record<string, string[]>>({});
     }
   }, [showLiveChat, isAdmin]);
 
-  // ------------------ TERMINAL COMMAND HANDLER ------------------
+  
   const handleTerminalCommand = async (input: string) => {
     const [cmd, ...args] = input.trim().split(" ");
 
@@ -259,21 +259,21 @@ Available commands:
 const findBestMatch = (userInput: string, responseDict: Record<string, string[]>) => {
   const input = userInput.toLowerCase().trim();
   
-  // First try exact match (case insensitive)
+  
   for (const [key, value] of Object.entries(responseDict)) {
     if (key.toLowerCase() === input) {
       return { match: key, responses: value };
     }
   }
   
-  // Then try partial match (if any key contains the user input)
+  
   for (const [key, value] of Object.entries(responseDict)) {
     if (key.toLowerCase().includes(input)) {
       return { match: key, responses: value };
     }
   }
   
-  // Then try if user input contains any key
+  
   for (const [key, value] of Object.entries(responseDict)) {
     if (input.includes(key.toLowerCase())) {
       return { match: key, responses: value };
@@ -282,7 +282,7 @@ const findBestMatch = (userInput: string, responseDict: Record<string, string[]>
   
   return null;
 };
-  // ------------------ SEND MESSAGE ------------------
+  
 const sendMessage = async (text: string) => {
   if (!text.trim()) return;
   const timestamp = Date.now();
@@ -363,17 +363,17 @@ const sendMessage = async (text: string) => {
       push(ref(db, `chatbot/${fullNode}`), userMessage);
 
       if (botActive) {
-        // Get all responses from database
+        
         const responsesRef = ref(db, 'chatbot/responses');
         const responsesSnapshot = await get(responsesRef);
         const allResponses = responsesSnapshot.val() || {};
         
-        // Find the best matching response
+        
         const matchedResponse = findBestMatch(text, allResponses);
         let responseText = "Sorry, I don't understand that.";
         
         if (matchedResponse) {
-          // Use the first response from the array, or if it's a string, use it directly
+          
           responseText = Array.isArray(matchedResponse.responses) 
             ? matchedResponse.responses[0] 
             : matchedResponse.responses;
@@ -387,14 +387,14 @@ const sendMessage = async (text: string) => {
         };
         push(ref(db, `chatbot/${fullNode}`), botMessage);
 
-        // Fetch suggestions for this specific bot reply
+        
         const safeKey = responseText.replace(/[.#$/[\]]/g, "_");
 const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
         get(replySuggestionsRef).then((snapshot) => {
           if (snapshot.exists()) {
             const data = snapshot.val();
             if (data) {
-              // Convert object to array, filter out empty values
+              
               const suggestionsArray = Object.values(data)
                 .filter((suggestion): suggestion is string => 
                   typeof suggestion === 'string' && suggestion.trim() !== ""
@@ -404,7 +404,7 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
               setSuggestions([]);
             }
           } else {
-            // If no suggestions found for this reply, show empty suggestions
+            
             setSuggestions([]);
           }
         }).catch((error) => {
@@ -425,17 +425,17 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
     push(ref(db, `chatbot/${sessionNode}`), userMessage);
 
     if (botActive) {
-      // Get all responses from database
+      
       const responsesRef = ref(db, 'chatbot/responses');
       const responsesSnapshot = await get(responsesRef);
       const allResponses = responsesSnapshot.val() || {};
       
-      // Find the best matching response
+      
       const matchedResponse = findBestMatch(text, allResponses);
       let responseText = "Sorry, I don't understand that.";
       
       if (matchedResponse) {
-        // Use the first response from the array, or if it's a string, use it directly
+        
         responseText = Array.isArray(matchedResponse.responses) 
           ? matchedResponse.responses[0] 
           : matchedResponse.responses;
@@ -449,14 +449,14 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
       };
       push(ref(db, `chatbot/${sessionNode}`), botMessage);
 
-      // Fetch suggestions for this specific bot reply
+      
       const safeKey = responseText.replace(/[.#$/[\]]/g, "_");
 const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
       get(replySuggestionsRef).then((snapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
           if (data) {
-            // Convert object to array, filter out empty values
+            
             const suggestionsArray = Object.values(data)
               .filter((suggestion): suggestion is string => 
                 typeof suggestion === 'string' && suggestion.trim() !== ""
@@ -466,7 +466,7 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
             setSuggestions([]);
           }
         } else {
-          // If no suggestions found for this reply, show empty suggestions
+          
           setSuggestions([]);
         }
       }).catch((error) => {
@@ -482,14 +482,14 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
     push(ref(db, `chatbot/device_1/${selectedSession}`), adminMessage);
   }
 };
-  // ------------------ LOAD SESSION ------------------
+  
   const loadSession = (sessionName: string) => {
     setSelectedSession(sessionName);
     setMessages([]);
     setSessionNode(`device_1/${sessionName}`);
   };
 
-  // ------------------ BACK ------------------
+  
   const handleBack = () => {
     setSelectedSession(null);
     setSessionNode(null);
@@ -497,7 +497,7 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
     setShowLiveChat(false);
   };
 
-  // ------------------ DELETE ALL SESSIONS ------------------
+  
   const deleteAllSessions = async () => {
     const sessionsRef = ref(db, 'chatbot/device_1');
     Alert.alert('Confirm', 'Delete all sessions?', [
@@ -516,7 +516,7 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
     ]);
   };
 
-  // ------------------ DELETE SINGLE SESSION ------------------
+  
   const deleteSession = async (sessionName: string) => {
     const sessionRef = ref(db, `chatbot/device_1/${sessionName}`);
     Alert.alert('Confirm', `Delete session ${sessionName}?`, [
@@ -538,7 +538,7 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // ------------------ TERMINAL MODAL ------------------
+  
   const renderTerminal = () => (
     <Modal visible={terminalMode} animationType="slide">
       <View style={{ flex: 1, backgroundColor: '#000', padding: 10 }}>
@@ -576,7 +576,7 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
     </Modal>
   );
 
-  // ------------------ RENDER ------------------
+  
   if (isAdmin && !selectedSession) {
     return (
       <View style={{ flex: 1, padding: 15 }}>
@@ -647,7 +647,7 @@ const replySuggestionsRef = ref(db, `suggestionReply/${safeKey}`);
     );
   }
 
-  // ------------------ CHAT VIEW ------------------
+  
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}

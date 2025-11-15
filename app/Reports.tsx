@@ -1,4 +1,4 @@
-// app/Reports.tsx
+
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import { db } from "../firebaseconfig";
@@ -39,7 +39,7 @@ export default function ReportsScreen() {
           }
         });
 
-        // Sort newest first
+        
         allReports.sort(
           (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
         );
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
-    elevation: 2, // Android shadow
+    elevation: 2, 
   },
   name: { fontWeight: "bold", fontSize: 16, marginBottom: 6 },
   message: { fontSize: 14, marginBottom: 6 },

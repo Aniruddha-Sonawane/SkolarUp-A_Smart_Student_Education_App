@@ -1,11 +1,11 @@
-// firebaseConfig.js
+
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBYpaLgPzCBvGSJn5wcfUItmdOQMzMbO8k",
   authDomain: "skolarupdb.firebaseapp.com",
-  databaseURL: "https://skolarupdb-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL: "https:
   projectId: "skolarupdb",
   storageBucket: "skolarupdb.firebasestorage.app",
   messagingSenderId: "659572301315",

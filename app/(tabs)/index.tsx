@@ -1,4 +1,4 @@
-// app/(tabs)/index.tsx
+
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import {
   StyleSheet,
@@ -42,8 +42,8 @@ interface SubjectQP { subjectName: string; qps: QP[]; addLink?: string; }
 interface AppLink {
   id: string;
   name: string;
-  url?: string;        // for external links
-  route?: string;      // for internal pages
+  url?: string;        
+  route?: string;      
   type?: "page" | "url";
   color?: string;
 }
@@ -122,7 +122,7 @@ const [extraLoading, setExtraLoading] = useState(true);
 
   const [appLinks, setAppLinks] = useState<AppLink[]>([]);
 
-  /** ------------------- FETCH DATA ------------------- **/
+  
   useEffect(() => {
     const welcomeRef = ref(db, 'welcomeBox');
     const listener = onValue(welcomeRef, (snapshot) => setWelcomeBox(snapshot.val()));
@@ -186,10 +186,10 @@ const [extraLoading, setExtraLoading] = useState(true);
     return () => off(coursesRef, 'value', listener);
   }, []);
 
-  /** ------------------- FETCH BOOKS SEM-WISE ------------------- **/
+  
   useEffect(() => {
   if (!selectedCourse || mode !== "books") return;
-  setBooksLoading(true); // start loading
+  setBooksLoading(true); 
   const courseBooksRef = ref(db, `courses/${selectedCourse}/books`);
   const listener = onValue(courseBooksRef, (snapshot) => {
     const data = snapshot.val();
@@ -208,7 +208,7 @@ const [extraLoading, setExtraLoading] = useState(true);
     } else {
       setBooksBySem({});
     }
-    setBooksLoading(false); // done loading
+    setBooksLoading(false); 
   });
   return () => off(courseBooksRef, 'value', listener);
 }, [selectedCourse, mode]);
@@ -247,10 +247,10 @@ const [extraLoading, setExtraLoading] = useState(true);
     return () => off(coursesRef, 'value', listener);
   }, []);
 
-  /** ------------------- FETCH QP SEM-WISE ------------------- **/
+  
   useEffect(() => {
   if (!selectedCourse || mode !== "qp") return;
-  setQpLoading(true); // start loading
+  setQpLoading(true); 
   const qpRef = ref(db, `previousYearQP/${selectedCourse}`);
   const listener = onValue(qpRef, (snapshot) => {
     const data = snapshot.val();
@@ -271,11 +271,11 @@ const [extraLoading, setExtraLoading] = useState(true);
     } else {
       setQpData({});
     }
-    setQpLoading(false); // done loading
+    setQpLoading(false); 
   });
   return () => off(qpRef, 'value', listener);
 }, [selectedCourse, mode]);
-// ------------------- FETCH EXTRA MATERIAL -------------------
+
 useEffect(() => {
   if (!selectedCourse || mode !== "extra") return;
   setExtraLoading(true);
@@ -309,7 +309,7 @@ useEffect(() => {
   return () => off(extraRef, "value", listener);
 }, [selectedCourse, mode]);
 
-  /** ------------------- FETCH APP LINKS ------------------- **/
+  
   useEffect(() => {
     const linksRef = ref(db, 'appLinks');
     const listener = onValue(linksRef, (snapshot) => {
@@ -329,7 +329,7 @@ useEffect(() => {
     return () => off(linksRef, 'value', listener);
   }, []);
 
-  /** ------------------- CLICK HANDLERS ------------------- **/
+  
   const handleBookClick = (book: Book) => router.push({ pathname: '/(tabs)/BookViewer', params: { url: book.pdfUrl } });
   const handleQpClick = (qp: QP) => router.push({ pathname: '/(tabs)/BookViewer', params: { url: qp.pdfUrl } });
   const handleLinkClick = (link: AppLink) => {
@@ -348,14 +348,14 @@ useEffect(() => {
     return words.map(w => w[0].toUpperCase()).join('');
   }
 
-  /** ------------------- RENDER ------------------- **/
+  
   const numColumns = 2;
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = (screenWidth - 50) / numColumns; 
 
   return (
     <View style={{ flex: 1 }}>
-      {/* FORCE UPDATE MODAL */}
+      {}
       <Modal visible={forceUpdateModal} transparent animationType="fade" hardwareAccelerated>
         <View style={styles.overlay}>
           <View style={styles.modal}>
@@ -369,7 +369,7 @@ useEffect(() => {
         </View>
       </Modal>
 
-      {/* POPUP */}
+      {}
       {showPopup && popupData && (
         <Modal transparent animationType="fade" visible={showPopup}>
           <View style={popupStyles.overlay}>
@@ -390,7 +390,7 @@ useEffect(() => {
         </Modal>
       )}
 
-      {/* SEARCH BAR */}
+      {}
       {showSearch && (
         <Animatable.View animation="fadeInDown" duration={200} style={styles.searchContainer}>
           <TextInput
@@ -405,7 +405,7 @@ useEffect(() => {
       )}
 
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 5 }}>
-        {/* WELCOME BOX */}
+        {}
         {welcomeBox?.flag !== undefined && welcomeBox?.show === 1 && (
           <View style={styles.welcomeBox}>
             {welcomeBox.imageUrl && <Image source={{ uri: welcomeBox.imageUrl }} style={styles.welcomeImage} />}
@@ -415,11 +415,11 @@ useEffect(() => {
           </View>
         )}
 
-        {/* Notices */}
+        {}
         <Text style={[styles.sectionTitle, { marginTop: 0 }]}>📢 Notices</Text>
         {filteredNotices.length === 0
   ? (
-    // ✅ Shimmer Loader for Notices
+    
     <View style={{ marginVertical: 10 }}>
       {[...Array(2)].map((_, i) => (
         <ShimmerPlaceholder 
@@ -440,15 +440,15 @@ useEffect(() => {
 }
 
 
-        {/* App Links */}
+        {}
         {appLinks.length === 0
   ? (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', marginBottom: 10 }}>
       {[...Array(4)].map((_, i) => (
         <ShimmerPlaceholder
           key={i}
-          width={buttonWidth} // match button width
-          height={40}        // approximate button height
+          width={buttonWidth} 
+          height={40}        
           style={{ marginVertical: 5, borderRadius: 10 }}
         />
       ))}
@@ -474,12 +474,12 @@ useEffect(() => {
 }
 
 
-        {/* Courses */}
+        {}
         <Text style={styles.sectionTitle}>📚 Courses</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
           {courses.length === 0
   ? (
-    // ✅ Shimmer Loader for Courses
+    
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
       {[...Array(5)].map((_, i) => (
         <ShimmerPlaceholder 
@@ -506,7 +506,7 @@ useEffect(() => {
 
         </ScrollView>
 
-        {/* Mode Selection */}
+        {}
         {selectedCourse && !mode && (
           <View>
             <Text style={[styles.sectionTitle, { marginTop: 0 }]}>Choose</Text>
@@ -521,11 +521,11 @@ useEffect(() => {
           </View>
         )}
 
-        {/* Books */}
+        {}
         {mode === "books" && (
   booksLoading
     ? (
-      // ✅ Shimmer while loading
+      
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 10 }}>
         {[...Array(4)].map((_, i) => (
           <ShimmerPlaceholder 
@@ -559,7 +559,7 @@ useEffect(() => {
         ))
 )}
 
-        {/* Extra Material */}
+        {}
 {mode === "extra" && (
   extraLoading ? (
     <ScrollView style={{ marginVertical: 10 }}>
@@ -603,11 +603,11 @@ useEffect(() => {
   )
 )}
 
-        {/* QPs */}
+        {}
         {mode === "qp" && (
            qpLoading
             ? (
-                  // ✅ Shimmer while loading
+                  
                <ScrollView style={{ marginVertical: 10 }}>
                  {[...Array(4)].map((_, i) => (
                   <ShimmerPlaceholder 
@@ -670,13 +670,13 @@ useEffect(() => {
     </View>
   )
   : (
-    // ✅ Shimmer Loader for Explore Random Books
+    
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 20 }}>
       {[...Array(4)].map((_, i) => (
         <ShimmerPlaceholder 
           key={i} 
-          width={120}       // same as book cover width
-          height={160}      // same as book cover height
+          width={120}       
+          height={160}      
           style={{ marginRight: 10, borderRadius: 8 }} 
         />
       ))}
@@ -691,8 +691,8 @@ useEffect(() => {
   
 }
 
-// --- STYLES ---
-// Keep all previous styles unchanged
+
+
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 15, backgroundColor: '#fff'},
   sectionTitle: { fontSize: 20, fontWeight: 'bold', marginVertical: 10 },

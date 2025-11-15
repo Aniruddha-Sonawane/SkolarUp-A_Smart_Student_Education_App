@@ -115,7 +115,7 @@ export default function TabLayout() {
           }}
         />
 
-        {/* Posts tab */}
+        {}
         <Tabs.Screen
           name="Posts"
           options={{
@@ -145,7 +145,7 @@ export default function TabLayout() {
           }}
         />
 
-        {/* ChatBot tab */}
+        {}
         <Tabs.Screen
           name="two"
           options={{
@@ -165,7 +165,7 @@ export default function TabLayout() {
           }}
         />
 
-        {/* BookViewer tab */}
+        {}
         <Tabs.Screen
           name="BookViewer"
           options={{
@@ -183,7 +183,7 @@ export default function TabLayout() {
           }}
         />
 
-        {/* Active Post tab */}
+        {}
         <Tabs.Screen
           name="posts/[postId]"
           options={{
@@ -208,13 +208,13 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   appBackground: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#0f75bc', // Match the start color of your gradient
+    backgroundColor: '#0f75bc', 
   },
   tabBar: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     overflow: 'hidden',
-    backgroundColor: 'transparent', // Make tabBar background transparent
+    backgroundColor: 'transparent', 
     borderTopWidth: 0,
     elevation: 8,
     shadowColor: '#000',
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
   gradientBackground: {
     flex: 1,
-    borderTopLeftRadius: 14, // Add border radius to the gradient itself
+    borderTopLeftRadius: 14, 
     borderTopRightRadius: 14,
   },
   headerTitleContainer: {

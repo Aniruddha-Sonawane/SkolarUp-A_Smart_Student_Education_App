@@ -1,4 +1,4 @@
-// app/liveChat.tsx
+
 import React, { useEffect, useState, useRef } from "react";
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { db } from "../firebaseconfig";

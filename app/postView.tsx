@@ -1,4 +1,4 @@
-// app/postView.tsx
+
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -42,7 +42,7 @@ export default function PostDetail() {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const inputRef = useRef<TextInput | null>(null);
 
-  // --- fetch post ---
+  
   useEffect(() => {
     const postRef = ref(db, `posts/${postId}`);
     const listener = onValue(postRef, (snapshot) => {
@@ -72,7 +72,7 @@ export default function PostDetail() {
     return () => off(postRef, 'value', listener);
   }, [postId, screenWidth]);
 
-  // --- fetch comments ---
+  
   useEffect(() => {
     const commentsRef = ref(db, `postcom/${postId}`);
     const listener = onValue(commentsRef, (snapshot) => {
@@ -92,7 +92,7 @@ export default function PostDetail() {
     return () => off(commentsRef, 'value', listener);
   }, [postId]);
 
-  // --- keyboard listeners ---
+  
   useEffect(() => {
     const onShow = (e: any) => setKeyboardHeight(e?.endCoordinates?.height ?? 0);
     const onHide = () => setKeyboardHeight(0);
@@ -110,8 +110,8 @@ export default function PostDetail() {
     };
   }, []);
 
-  // --- share post ---
-  // --- share post ---
+  
+  
 const handleShare = async () => {
   if (!post) return;
   try {
@@ -119,19 +119,19 @@ const handleShare = async () => {
       message: `${post.content}\n\n${post.imageUrl ? (post.imageUrl as string).split(',')[0] : ''}`,
     });
 
-    // Increment share count
+    
     const currentShares = post.shares || 0;
     const postRef = ref(db, `posts/${postId}`);
     await update(postRef, { shares: currentShares + 1 });
     
-    // Optionally update local state to reflect immediately
+    
     setPost({ ...post, shares: currentShares + 1 });
   } catch (err) {
     console.log('Share error', err);
   }
 };
 
-  // --- add comment ---
+  
   const handleAddComment = async () => {
     const text = newComment.trim();
     if (!text) return;
@@ -149,20 +149,20 @@ const handleShare = async () => {
     Keyboard.dismiss();
   };
 
-  // --- like a comment ---
+  
   const handleLikeComment = async (commentId: string, currentLikes = 0) => {
     const commentRef = ref(db, `postcom/${postId}/${commentId}`);
     await update(commentRef, { likes: (currentLikes || 0) + 1 });
   };
 
-  // --- like post ---
+  
   const handleLikePost = async () => {
     const currentLikes = post?.likes || 0;
     const postRef = ref(db, `posts/${postId}`);
     await update(postRef, { likes: currentLikes + 1 });
   };
 
-  // --- timeAgo function ---
+  
   const timeAgo = (dateString?: string) => {
     if (!dateString || typeof dateString !== 'string') return '';
     let postDate: Date;
@@ -232,7 +232,7 @@ const handleShare = async () => {
 
             <Text style={styles.postContent}>{post.content}</Text>
 
-            {/* === Links (open in app/linkViewer) === */}
+            {}
             {post.links && typeof post.links === 'object' && (
               <View style={styles.linksRow}>
                 {Object.keys(post.links).map((key) => {
@@ -246,7 +246,7 @@ const handleShare = async () => {
     pathname: './LinkViewer',
     params: {
       url: encodeURIComponent(link.url),
-      name: link.name, // pass the link name
+      name: link.name, 
     },
   })
 }
@@ -312,7 +312,7 @@ const handleShare = async () => {
           </View>
         </ScrollView>
 
-        {/* === Input === */}
+        {}
         <View
           style={[
             styles.inputWrapper,

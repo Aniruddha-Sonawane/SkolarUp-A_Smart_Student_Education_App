@@ -1,4 +1,4 @@
-// app/(tabs)/Posts.tsx
+
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import {
   View,
@@ -57,9 +57,9 @@ export default function PostsScreen() {
   const router = useRouter();
   const screenWidth = Dimensions.get('window').width;
 
-  // Fetch all types of content
+  
   useEffect(() => {
-    // Fetch regular posts
+    
     const postsRef = ref(db, 'posts');
     const postsListener = onValue(postsRef, (snapshot) => {
       const data = snapshot.val();
@@ -81,7 +81,7 @@ export default function PostsScreen() {
       }
     });
 
-    // Fetch books from /courses/{course}/books/{semester}/{book}
+    
     const fetchBooks = () => {
       const coursesRef = ref(db, 'courses');
       onValue(coursesRef, (coursesSnapshot) => {
@@ -140,7 +140,7 @@ export default function PostsScreen() {
       });
     };
 
-    // Fetch QPs from /previousYearQP/{course}/{semester}/{subject}/{date}
+    
     const fetchQPs = () => {
       const coursesRef = ref(db, 'previousYearQP');
       onValue(coursesRef, (coursesSnapshot) => {
@@ -209,7 +209,7 @@ export default function PostsScreen() {
       });
     };
 
-    // Fetch materials from /extraMaterial/{course}/{semester}/{subject}/{material}
+    
     const fetchMaterials = () => {
       const coursesRef = ref(db, 'extraMaterial');
       onValue(coursesRef, (coursesSnapshot) => {
@@ -288,7 +288,7 @@ export default function PostsScreen() {
     };
   }, []);
 
-  // Fetch comment counts for all items
+  
   useEffect(() => {
     const allItems = [...posts, ...books, ...qps, ...materials];
     allItems.forEach((item) => {
@@ -305,7 +305,7 @@ export default function PostsScreen() {
     setTimeout(() => setRefreshing(false), 800);
   };
 
-  // Search bar
+  
   useEffect(() => {
     const showSearchBar = () => {
       setShowSearch(true);
@@ -332,7 +332,7 @@ export default function PostsScreen() {
     }).start();
   };
 
-  // Get content based on selected category
+  
   const getContentByCategory = () => {
     switch (selectedCategory) {
       case 'post': return posts;
@@ -343,19 +343,19 @@ export default function PostsScreen() {
     }
   };
 
-  // Filter content based on search and category
+  
   const filteredContent = getContentByCategory().filter(
     (item) =>
       item.title.toLowerCase().includes(search.toLowerCase()) ||
       item.content.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Time ago function
+  
   const timeAgo = (dateString?: string) => {
     if (!dateString) return '';
 
     try {
-      // Try to parse the date if it's in a different format
+      
       let postDate: Date;
       if (dateString.includes('/')) {
         const [day, month, year] = dateString.split('/').map(Number);
@@ -417,7 +417,7 @@ export default function PostsScreen() {
   if (item.type === 'post') {
     router.push({ pathname: '/postView', params: { postId: item.id } } as any);
   } else if (item.pdfUrl) {
-    // For books, QPs, and materials with PDF URLs, navigate to BookViewer
+    
     router.push({ 
       pathname: '/(tabs)/BookViewer', 
       params: { 
@@ -426,7 +426,7 @@ export default function PostsScreen() {
       } 
     } as any);
   }
-  // If no PDF URL, don't navigate (or you could show an alert)
+  
 };
 
   const CategoryButton = ({ type, label }: { type: ContentType, label: string }) => (
@@ -448,12 +448,12 @@ export default function PostsScreen() {
 
   const translateY = slideAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 60] // Adjust this value based on your search bar height
+    outputRange: [0, 60] 
   });
 
   return (
     <View style={{ flex: 1, backgroundColor: '#0b2d5fff' }}>
-  {/* Category Buttons */}
+  {}
   <View style={styles.categoryContainer}>
     <CategoryButton type="post" label="Posts" />
     <CategoryButton type="book" label="Books" />
@@ -461,7 +461,7 @@ export default function PostsScreen() {
     <CategoryButton type="material" label="Extra Material" />
   </View>
 
-  {/* Search Bar */}
+  {}
   {showSearch && (
     <Animatable.View 
       animation="fadeInDown" 
@@ -518,7 +518,7 @@ export default function PostsScreen() {
                 <Text style={styles.postTitle}>{item.title}</Text>
               </View>
 
-              {/* Images */}
+              {}
               {item.imageUrl &&
                 (item.imageUrl as string)
                   .split(',')
@@ -549,7 +549,7 @@ export default function PostsScreen() {
                     );
                   })}
 
-              {/* Content */}
+              {}
               <TouchableOpacity
                 onPress={() => navigateToItem(item)}
               >
@@ -558,9 +558,9 @@ export default function PostsScreen() {
                 </Text>
               </TouchableOpacity>
 
-              {/* Actions Row */}
+              {}
 <View style={styles.actionRow}>
-  {/* Likes - Show for all content types */}
+  {}
   <TouchableOpacity
     style={styles.actionBtn}
     onPress={() => handleLike(item.type, item.path, item.likes || 0)}
@@ -569,10 +569,10 @@ export default function PostsScreen() {
     <Text style={styles.actionText}>{item.likes || 0}</Text>
   </TouchableOpacity>
 
-  {/* Comments and Shares - Only show for posts */}
+  {}
   {item.type === 'post' && (
     <>
-      {/* Comments (navigate to item view) */}
+      {}
       <TouchableOpacity
         style={styles.actionBtn}
         onPress={() => navigateToItem(item)}
@@ -581,7 +581,7 @@ export default function PostsScreen() {
         <Text style={styles.actionText}>{commentCounts[item.id] || 0}</Text>
       </TouchableOpacity>
 
-      {/* Shares */}
+      {}
       <TouchableOpacity style={styles.actionBtn} onPress={() => handleShare(item)}>
         <Feather name="share" size={22} color="#fff" />
         <Text style={styles.actionText}>{item.shares || 0}</Text>
@@ -589,7 +589,7 @@ export default function PostsScreen() {
     </>
   )}
 
-  {/* Time ago - don't show for QPs */}
+  {}
   {item.type !== 'qp' && (
     <Text style={styles.timeText}>{timeAgo(item.date)}</Text>
   )}
@@ -606,7 +606,7 @@ const styles = StyleSheet.create({
   container: { 
   flex: 1, 
   padding: 8, 
-  backgroundColor: '#0b2d5fff', // This matches the background
+  backgroundColor: '#0b2d5fff', 
 },
   categoryContainer: {
     flexDirection: 'row',
@@ -636,7 +636,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     position: 'absolute',
-    top: 60, // Height of category buttons
+    top: 60, 
     left: 15,
     right: 15,
     zIndex: 10,
