@@ -22,17 +22,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # === TypeScript Check + Save Errors to File ===
       - name: TypeScript check
         run: |
-         npx tsc --noEmit > ts-errors.txt 2>&1 || true
+          npx tsc --noEmit > ts-errors.txt 2>&1 || true
 
-      - name: Upload TS errors
-         uses: actions/upload-artifact@v3
-         with:
-            name: typescript-errors
-            path: ts-errors.txt
+      # === Upload Error Output as Artifact ===
+      - name: Upload TypeScript errors
+        uses: actions/upload-artifact@v3
+        with:
+          name: typescript-errors
+          path: ts-errors.txt
 
-
-
-      - name: Expo build check (web export)
+      # === Expo Build Check (Web Export Only) ===
+      - name: Expo build check
         run: npx expo export --platform web
