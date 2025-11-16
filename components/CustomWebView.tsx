@@ -1,4 +1,4 @@
-
+// components/CustomWebView.tsx
 import React, { useState } from 'react';
 import { WebView, WebViewNavigation } from 'react-native-webview';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Platform } from 'react-native';
@@ -71,7 +71,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
 
   return (
     <View style={styles.container}>
-      {}
+      {/* Navigation Controls */}
       <View style={styles.navContainer}>
         <TouchableOpacity 
           onPress={() => router.back()}
@@ -90,7 +90,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
         </TouchableOpacity>
       </View>
 
-      {}
+      {/* Loading Indicator */}
       {isLoading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#2E86DE" />
@@ -98,7 +98,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
         </View>
       )}
 
-      {}
+      {/* WebView with mixed content allowed and JavaScript enabled */}
       <WebView
         source={{ uri: url }}
         onError={handleLoadError}
@@ -109,8 +109,8 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
         allowsInlineMediaPlayback={true}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        mixedContentMode="always" 
-        originWhitelist={['*']} 
+        mixedContentMode="always" // Allow both HTTP and HTTPS content
+        originWhitelist={['*']} // Allow all origins
         onLoadStart={() => setIsLoading(true)}
         onLoadEnd={() => setIsLoading(false)}
         renderError={(errorDomain, errorCode, errorDesc) => (
@@ -133,7 +133,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
         style={styles.webview}
       />
 
-      {}
+      {/* Bottom Navigation Controls */}
       <View style={styles.bottomNav}>
         <TouchableOpacity 
           onPress={() => this.webviewRef.goBack()} 
