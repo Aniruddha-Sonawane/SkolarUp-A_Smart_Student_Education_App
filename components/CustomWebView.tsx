@@ -13,7 +13,9 @@ interface CustomWebViewProps {
 
 export default function CustomWebView({ url, title }: CustomWebViewProps) {
   const router = useRouter();
-  const webviewRef = useRef<WebView>(null); // ✅ FIXED
+
+  // FIX: Proper WebView ref
+  const webviewRef = useRef<WebView>(null);
 
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -40,7 +42,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
     setHasError(false);
     setErrorMessage('');
     setIsLoading(true);
-    webviewRef.current?.reload(); // optional
+    webviewRef.current?.reload();
   };
 
   const openInExternalBrowser = () => {
@@ -74,7 +76,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
 
   return (
     <View style={styles.container}>
-      {/* Top Nav */}
+      {/* Top Navigation Bar */}
       <View style={styles.navContainer}>
         <TouchableOpacity onPress={() => router.back()} style={styles.navButton}>
           <Ionicons name="arrow-back" size={24} color="#2E86DE" />
@@ -97,27 +99,43 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
 
       {/* WebView */}
       <WebView
-        ref={webviewRef}  // ✅ FIXED
+        ref={webviewRef}
         source={{ uri: url }}
         onError={handleLoadError}
         onHttpError={handleLoadError}
         onNavigationStateChange={handleNavigationStateChange}
         startInLoadingState={true}
-        allowsBackForwardNavigationGestures={true}
-        allowsInlineMediaPlayback={true}
         javaScriptEnabled={true}
         domStorageEnabled={true}
+        allowsInlineMediaPlayback={true}
         mixedContentMode="always"
         originWhitelist={['*']}
         onLoadStart={() => setIsLoading(true)}
         onLoadEnd={() => setIsLoading(false)}
+        renderError={(errorDomain, errorCode, errorDesc) => (
+          <View style={styles.errorContainer}>
+            <Ionicons name="warning" size={50} color="#FF9500" style={styles.errorIcon} />
+            <Text style={styles.errorTitle}>Unable to load page</Text>
+            <Text style={styles.errorMessage}>{errorDesc}</Text>
+
+            <TouchableOpacity style={styles.retryButton} onPress={handleRetry}>
+              <Ionicons name="refresh" size={20} color="white" />
+              <Text style={styles.retryText}>Retry</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.externalButton} onPress={openInExternalBrowser}>
+              <Ionicons name="open-outline" size={20} color="white" />
+              <Text style={styles.externalText}>Open in Browser</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         style={styles.webview}
       />
 
-      {/* Bottom Nav */}
+      {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
         <TouchableOpacity
-          onPress={() => webviewRef.current?.goBack()}   // ✅ FIXED
+          onPress={() => webviewRef.current?.goBack()}
           disabled={!canGoBack}
           style={[styles.navControl, !canGoBack && styles.disabledControl]}
         >
@@ -126,7 +144,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => webviewRef.current?.goForward()} // ✅ FIXED
+          onPress={() => webviewRef.current?.goForward()}
           disabled={!canGoForward}
           style={[styles.navControl, !canGoForward && styles.disabledControl]}
         >
@@ -135,7 +153,7 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => webviewRef.current?.reload()} // ✅ FIXED
+          onPress={() => webviewRef.current?.reload()}
           style={styles.navControl}
         >
           <Ionicons name="refresh" size={20} color="#2E86DE" />
@@ -147,5 +165,109 @@ export default function CustomWebView({ url, title }: CustomWebViewProps) {
 }
 
 const styles = StyleSheet.create({
-  /* same styles as yours */
+  container: { flex: 1, backgroundColor: '#fff' },
+
+  navContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    backgroundColor: '#f8f8f8',
+  },
+
+  title: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginHorizontal: 10,
+  },
+
+  navButton: { padding: 5 },
+
+  webview: { flex: 1 },
+
+  loadingContainer: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    zIndex: 10,
+  },
+
+  loadingText: { marginTop: 10, fontSize: 16, color: '#666' },
+
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+
+  errorIcon: { marginBottom: 15 },
+
+  errorTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
+
+  errorMessage: { fontSize: 16, color: '#666', marginBottom: 30, textAlign: 'center' },
+
+  retryButton: {
+    flexDirection: 'row',
+    backgroundColor: '#2E86DE',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+    width: '80%',
+    justifyContent: 'center',
+  },
+
+  retryText: { color: 'white', fontWeight: 'bold', marginLeft: 10 },
+
+  externalButton: {
+    flexDirection: 'row',
+    backgroundColor: '#34C759',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+    alignItems: 'center',
+    width: '80%',
+    justifyContent: 'center',
+  },
+
+  externalText: { color: 'white', fontWeight: 'bold', marginLeft: 10 },
+
+  backButton: {
+    flexDirection: 'row',
+    padding: 15,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#2E86DE',
+    alignItems: 'center',
+    width: '80%',
+    justifyContent: 'center',
+  },
+
+  backText: { color: '#2E86DE', fontWeight: 'bold', marginLeft: 10 },
+
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    backgroundColor: '#f8f8f8',
+  },
+
+  navControl: { alignItems: 'center', padding: 10 },
+
+  disabledControl: { opacity: 0.5 },
+
+  navText: { fontSize: 12, color: '#2E86DE', marginTop: 5 },
+
+  disabledText: { color: '#ccc' },
 });
