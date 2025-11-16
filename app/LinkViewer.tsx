@@ -1,4 +1,4 @@
-
+// app/LinkViewer.tsx
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, ActivityIndicator, Linking } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -11,9 +11,9 @@ export default function BookViewer() {
   );
 
   const handleSSLError = (url: string) => {
-    
+    // Open in browser without alert
     Linking.openURL(url);
-    
+    // Reset the webview URL to show placeholder again
     setWebViewUrl(null);
   };
 
@@ -45,7 +45,7 @@ export default function BookViewer() {
         onError={(syntheticEvent) => {
           const { nativeEvent } = syntheticEvent;
           
-          
+          // Check if the error is related to SSL
           if (nativeEvent.description?.includes('SSL') || 
               nativeEvent.description?.includes('certificate') ||
               nativeEvent.url?.includes('https')) {
@@ -55,7 +55,7 @@ export default function BookViewer() {
         onHttpError={(syntheticEvent) => {
           const { nativeEvent } = syntheticEvent;
           
-          
+          // Some SSL errors might come as HTTP errors
           if (nativeEvent.statusCode === 403 || 
               nativeEvent.statusCode === 500 ||
               nativeEvent.url?.includes('https')) {
@@ -67,7 +67,7 @@ export default function BookViewer() {
   );
 }
 
-
+// Remove top header
 export const options = {
   headerShown: false,
 };

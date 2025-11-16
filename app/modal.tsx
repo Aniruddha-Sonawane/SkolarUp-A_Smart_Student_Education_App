@@ -1,4 +1,4 @@
-
+// app/modal.tsx
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -16,7 +16,7 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { db } from '../firebaseconfig';
 import { ref, onValue, off, push } from 'firebase/database';
-import FontAwesome from '@expo/vector-icons/FontAwesome'; 
+import FontAwesome from '@expo/vector-icons/FontAwesome'; // <-- Icon import
 
 const { height } = Dimensions.get('window');
 
@@ -35,13 +35,13 @@ interface ExtraLink {
 export default function AboutModal() {
   const [instaData, setInstaData] = useState<InstaData | null>(null);
   const [privacyPolicyUrl, setPrivacyPolicyUrl] = useState<string>(
-    'https:
+    'https://www.aknee.com/privacy-policy'
   );
   const [contactUrl, setContactUrl] = useState<string>(''); 
   const [extraLinks, setExtraLinks] = useState<ExtraLink[]>([]);
   const [devImageUrl, setDevImageUrl] = useState<string | null>(null);
 
-  
+  // --- Report Modal State ---
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [reportName, setReportName] = useState('');
   const [reportMessage, setReportMessage] = useState('');
@@ -128,7 +128,7 @@ export default function AboutModal() {
 
       <View style={styles.separator} />
 
-      {}
+      {/* --- Report Bug Button with Bug Icon --- */}
       <TouchableOpacity
         style={styles.reportButton}
         onPress={() => { setReportModalVisible(true); setReportSubmitted(false); }}
@@ -139,7 +139,7 @@ export default function AboutModal() {
         </View>
       </TouchableOpacity>
 
-      {}
+      {/* --- Contact Button with Telegram Icon --- */}
       {contactUrl ? (
         <TouchableOpacity style={styles.contactButton} onPress={() => openLink(contactUrl)}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -149,7 +149,7 @@ export default function AboutModal() {
         </TouchableOpacity>
       ) : null}
 
-      {}
+      {/* Privacy Policy Small Button */}
       <TouchableOpacity style={styles.smallPrivacyButton} onPress={() => openLink(privacyPolicyUrl)}>
         <Text style={styles.smallPrivacyText}>Privacy Policy</Text>
       </TouchableOpacity>
@@ -200,7 +200,7 @@ export default function AboutModal() {
   );
 }
 
-
+// --- Styles ---
 const styles = StyleSheet.create({
   container: { flexGrow: 1, backgroundColor: '#FFF', alignItems: 'center', padding: 20 },
   logoContainer: { height: height / 3.5, justifyContent: 'center', alignItems: 'center', marginBottom: -70, marginTop: -20 },
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   footerText: { fontSize: 14, color: '#999', textAlign: 'center', marginBottom: 30 },
 });
 
-
+// --- Modal Styles ---
 const modalStyles = StyleSheet.create({
   overlay: { flex:1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'center', alignItems:'center' },
   container: { width:'85%', backgroundColor:'#fff', borderRadius:15, padding:20, alignItems:'center' },

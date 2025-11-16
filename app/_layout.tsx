@@ -1,4 +1,4 @@
-
+// app/_layout.tsx
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -11,16 +11,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useColorScheme } from '@/components/useColorScheme';
 
 export {
-  
+  // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
 export const unstable_settings = {
-  
+  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
 
-
+// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -29,7 +29,7 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  
+  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -53,10 +53,10 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        {}
+        {/* Main tabs */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-        {}
+        {/* Modal renamed to About Me */}
         <Stack.Screen
           name="modal"
           options={{
@@ -75,12 +75,12 @@ function RootLayoutNav() {
           }}
         />
 
-        {}
-        {}
+        {/* 🔗 New Link Viewer screen */}
+        {/* 🔗 New Link Viewer screen */}
 <Stack.Screen
   name="LinkViewer"
   options={({ route }: { route: { params?: { title?: string } } }) => ({
-    headerTitle: route.params?.title || 'Link Viewer', 
+    headerTitle: route.params?.title || 'Link Viewer', // dynamic title
     headerTitleAlign: 'left',
     headerTitleStyle: { fontWeight: 'bold', fontSize: 22, color: '#fff' },
     headerBackground: () => (
@@ -96,7 +96,7 @@ function RootLayoutNav() {
 <Stack.Screen
   name="postView"
   options={({ route }: { route: { params?: { title?: string } } }) => ({
-    headerTitle: route.params?.title || 'Post', 
+    headerTitle: route.params?.title || 'Post', // dynamic title
     headerTitleAlign: 'left',
     headerTitleStyle: { fontWeight: 'bold', fontSize: 22, color: '#fff' },
     headerBackground: () => (

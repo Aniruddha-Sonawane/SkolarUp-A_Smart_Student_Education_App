@@ -1,4 +1,4 @@
-
+// app/(tabs)/BookViewer.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Animated, Easing, Dimensions, Linking } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -20,21 +20,21 @@ export default function BookViewer() {
       const decodedUrl = decodeURIComponent(url);
       setWebViewUrl(decodedUrl);
       
-      
+      // Reset animations when URL is present
       fadeAnim.setValue(0);
       floatAnim.setValue(0);
       cloudAnim1.setValue(0);
       cloudAnim2.setValue(0);
       cloudAnim3.setValue(0);
     } else {
-      
+      // Start animations when no URL is present
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
           duration: 1500,
           useNativeDriver: true,
         }),
-        
+        // Floating animation for main container
         Animated.loop(
           Animated.sequence([
             Animated.timing(floatAnim, {
@@ -51,7 +51,7 @@ export default function BookViewer() {
             }),
           ])
         ),
-        
+        // Cloud animations
         Animated.loop(
           Animated.sequence([
             Animated.timing(cloudAnim1, {
@@ -105,9 +105,9 @@ export default function BookViewer() {
   }, [url]);
 
   const handleSSLError = (url: string) => {
-    
+    // Open in browser without alert
     Linking.openURL(url);
-    
+    // Reset the webview URL to show animation again
     setWebViewUrl(null);
   };
 
@@ -140,7 +140,7 @@ export default function BookViewer() {
           onError={(syntheticEvent) => {
             const { nativeEvent } = syntheticEvent;
             
-            
+            // Check if the error is related to SSL
             if (nativeEvent.description?.includes('SSL') || 
                 nativeEvent.description?.includes('certificate') ||
                 nativeEvent.url?.includes('https')) {
@@ -150,7 +150,7 @@ export default function BookViewer() {
           onHttpError={(syntheticEvent) => {
             const { nativeEvent } = syntheticEvent;
             
-            
+            // Some SSL errors might come as HTTP errors
             if (nativeEvent.statusCode === 403 || 
                 nativeEvent.statusCode === 500 ||
                 nativeEvent.url?.includes('https')) {
@@ -160,7 +160,7 @@ export default function BookViewer() {
         />
       ) : (
         <View style={styles.placeholderContainer}>
-          {}
+          {/* Background elements */}
           <Animated.View 
             style={[
               styles.moon,
@@ -171,7 +171,7 @@ export default function BookViewer() {
             ]}
           />
           
-          {}
+          {/* Clouds */}
           <Animated.View 
             style={[
               styles.cloud,
@@ -208,7 +208,7 @@ export default function BookViewer() {
   );
 }
 
-
+// Remove top header
 export const options = {
   headerShown: false,
 };
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2a2d3e',
     overflow: 'hidden',
   },
-  
+  // Moon
   moon: {
     position: 'absolute',
     top: 300,
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     zIndex: 5,
   },
-  
+  // Clouds
   cloud: {
     position: 'absolute',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',

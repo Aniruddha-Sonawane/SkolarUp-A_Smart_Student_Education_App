@@ -1,3 +1,4 @@
+// app/(tabs)/_layout.tsx
 import React, { useRef } from 'react';
 import { View, Image, Text, Pressable, StyleSheet } from 'react-native';
 import { Link, Tabs } from 'expo-router';
@@ -38,6 +39,7 @@ export default function TabLayout() {
         },
       }}
     >
+      {/* Main app background that matches the tab bar */}
       <View style={styles.appBackground} />
 
       <Tabs
@@ -62,6 +64,7 @@ export default function TabLayout() {
           headerShown: true,
         }}
       >
+        {/* Home tab */}
         <Tabs.Screen
           name="index"
           options={{
@@ -115,7 +118,7 @@ export default function TabLayout() {
           }}
         />
 
-        {}
+        {/* Posts tab */}
         <Tabs.Screen
           name="Posts"
           options={{
@@ -145,7 +148,7 @@ export default function TabLayout() {
           }}
         />
 
-        {}
+        {/* ChatBot tab */}
         <Tabs.Screen
           name="two"
           options={{
@@ -165,7 +168,7 @@ export default function TabLayout() {
           }}
         />
 
-        {}
+        {/* BookViewer tab */}
         <Tabs.Screen
           name="BookViewer"
           options={{
@@ -183,7 +186,7 @@ export default function TabLayout() {
           }}
         />
 
-        {}
+        {/* Active Post tab */}
         <Tabs.Screen
           name="posts/[postId]"
           options={{
@@ -208,13 +211,13 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   appBackground: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#0f75bc', 
+    backgroundColor: '#0f75bc', // Match the start color of your gradient
   },
   tabBar: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     overflow: 'hidden',
-    backgroundColor: 'transparent', 
+    backgroundColor: 'transparent', // Make tabBar background transparent
     borderTopWidth: 0,
     elevation: 8,
     shadowColor: '#000',
@@ -224,7 +227,7 @@ const styles = StyleSheet.create({
   },
   gradientBackground: {
     flex: 1,
-    borderTopLeftRadius: 14, 
+    borderTopLeftRadius: 14, // Add border radius to the gradient itself
     borderTopRightRadius: 14,
   },
   headerTitleContainer: {
