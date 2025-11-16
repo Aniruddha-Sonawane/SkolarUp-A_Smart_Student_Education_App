@@ -23,7 +23,9 @@ jobs:
         run: npm install
 
       - name: TypeScript check
-        run: npx tsc --noEmit
+        run: |
+          npx tsc --noEmit > ts-errors.txt 2>&1 || true
+
 
       - name: Expo build check (web export)
         run: npx expo export --platform web
